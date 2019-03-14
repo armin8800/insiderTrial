@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Result;
 use App\Models\Team;
 use App\Modles\Table;
 use App\Services\GameService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
 class ResultPageController extends Controller
