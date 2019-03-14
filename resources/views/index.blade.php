@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+<img src="/img/loading.gif" id="loading" style="position: absolute;left: 50%;top:30%;">
 <div class="container mt-4">
     <div class="row">
         <div class="col-lg-5">
@@ -43,6 +43,9 @@
         </div>
         <div class="col-lg-3">
             <h4>Prediction of the Championship</h4>
+            <div id="prediction-res" class="col-lg-12">
+
+            </div>
         </div>
     </div>
     <div class="row mt-4">
@@ -57,11 +60,27 @@
             </div>
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-lg-5">
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-primary" id="resetBtn" onclick="resetAll()">Reset All Results</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
+    $(document).ajaxSend(function(){
+        $('#loading').fadeIn(50);
+    });
+    $(document).ajaxComplete(function(){
+        $('#loading').fadeOut(50);
+    });
     $(document).ready(function () {
         getWeek();
         getTable();
+        getPrediction();
     });
     function getTable() {
         $.ajax({
@@ -121,7 +140,36 @@
                     });
                     getWeek();
                     getTable();
+                    getPrediction();
                 }
+            }
+        });
+    }
+
+    function resetAll() {
+        $.ajax({
+            url: "/reset",
+            success: function (result) {
+                alert('All Results Reset!');
+                getWeek();
+                getTable();
+                getPrediction();
+
+            }
+        });
+    }
+
+    function getPrediction() {
+        $.ajax({
+            url: "/prediction",
+            success: function (result) {
+                console.log(result);
+                $('#prediction-res').html('');
+                $.each(result,function (key,value) {
+                    var eachrow = '';
+                    eachrow +='<div>' + value["name"] + ' ' + value["value"] + '%' + '</div>';
+                    $('#prediction-res').append(eachrow);
+                });
             }
         });
     }

@@ -14,5 +14,8 @@
 Route::get('/', 'ResultPageController@index');
 
 Route::get('/table','ResultPageController@table');
+Route::get('/reset','ResultPageController@reset');
+
 Route::get('/currentWeek','ResultPageController@week');
 Route::get('/play','ResultPageController@play');
+Route::get('/prediction','ResultPageController@prediction');

@@ -7,6 +7,7 @@ use App\Models\Team;
 use App\Modles\Table;
 use App\Services\GameService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class ResultPageController extends Controller
 {
@@ -17,14 +18,31 @@ class ResultPageController extends Controller
         $this->gameService = $gameService;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-        $week = $this->gameService->detectWeek();
-        //$this->gameService->getMatch();
-        //$a = $this->gameService->resultGenerator(Team::find(1), Team::find(2));
-        //dump($a);
-        return view('index', compact($week));
+        return view('index');
     }
+
+    /**
+     * @return int
+     * run these commands to have a new fresh database
+     */
+    public function reset()
+    {
+        Artisan::call('migrate:rollback');
+        Artisan::call('migrate');
+        Artisan::call('db:seed');
+
+        return 1;
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * return the current status of the table
+     */
     public function table()
     {
         $result = Table::orderBy('points','DESC')
@@ -45,11 +63,19 @@ class ResultPageController extends Controller
         return response()->json($response->toArray());
     }
 
+    /**
+     * @return float
+     * return current week of the games
+     */
     public function week()
     {
         return $this->gameService->detectWeek();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * plays a match
+     */
     public function play()
     {
         $week = $this->gameService->detectWeek();
@@ -76,10 +102,17 @@ class ResultPageController extends Controller
         return response()->json(['success' => 1, 'result' => $result]);
     }
 
-    public function updateMatchResult($match, $matchResult)
+    public function prediction()
     {
-        //if($match->home_team_id == $matchResult[""])
+        $precidtion =  $this->gameService->getPrediction();
+        $res =[];
+        foreach ($precidtion as $key=>$pre) {
+            $pArr = [];
+            $pArr["name"] = Team::find($key)->name;
+            $pArr["value"] = number_format((float)$pre*100, 2, '.', '');
+            $res[] = $pArr;
+        }
+        return $res;
     }
 
-    //public function
 }

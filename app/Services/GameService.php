@@ -20,12 +20,12 @@ class GameService
     {
         $this->weightedGoals =
             [
-                '0' => 12,
-                '1' => 15,
-                '2' => 10,
-                '3' => 7,
-                '4' => 2,
-                '5' => 2,
+                '0' => 20,
+                '1' => 24,
+                '2' => 14,
+                '3' => 8,
+                '4' => 4,
+                '5' => 3,
                 '6' => 1,
                 '7' => 1,
             ];
@@ -154,4 +154,22 @@ class GameService
 
         return $tableTeam->save();
     }
+
+    public function getPrediction()
+    {
+        $percentageTeam = [];
+        $allPointsTeamsGet = 0;
+        $teamTable = Table::all();
+        foreach ($teamTable as $team) {
+            $allPointsTeamsGet += $team->points + (6 - $team->games) * 1.5;
+            $percentageTeam[$team->id] = $team->points + (6 - $team->games) * 1.5;
+        }
+        $result = [];
+        foreach ($percentageTeam as $key => $teamPoint) {
+            $result[$key] = $percentageTeam[$key] / $allPointsTeamsGet;
+        }
+
+        return $result;
+    }
+
 }
