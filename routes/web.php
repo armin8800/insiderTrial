@@ -12,3 +12,7 @@
 */
 
 Route::get('/', 'ResultPageController@index');
+
+Route::get('/table','ResultPageController@table');
+Route::get('/currentWeek','ResultPageController@week');
+Route::get('/play','ResultPageController@play');

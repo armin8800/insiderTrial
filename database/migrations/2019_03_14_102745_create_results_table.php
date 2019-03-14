@@ -17,8 +17,10 @@ class CreateResultsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('home_team_id')->references('id')->on('teams')->onDelete('cascade');
             $table->integer('guest_team_id')->references('id')->on('teams')->onDelete('cascade');;
-            $table->integer('home_team_result');
-            $table->integer('guest_team_result');
+            $table->integer('home_team_result')->nullable();
+            $table->integer('guest_team_result')->nullable();
+            $table->integer('week_played')->nullable();
+            $table->integer('is_played')->default(0);
             $table->timestamps();
         });
     }

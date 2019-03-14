@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Result extends Model
 {
+    protected $fillable = ['home_team_id' ,'guest_team_id' ,'home_team_result' ,'guest_team_result', 'is_played','week_played'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -23,5 +24,15 @@ class Result extends Model
     public function guestTeam()
     {
         return $this->hasOne(Team::class, 'id', 'guest_team_id');
+    }
+
+    public function scopeOfPlayed($query)
+    {
+        return $query->where('is_played', 1);
+    }
+
+    public function scopeOfNotPlayed($query)
+    {
+        return $query->where('is_played', 0);
     }
 }

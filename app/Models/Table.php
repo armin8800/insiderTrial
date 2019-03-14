@@ -12,4 +12,8 @@ class Table extends Model
     {
         return $this->hasOne(Team::class, 'id', 'team_id');
     }
+    public function scopeOfTeam($query, $teamId)
+    {
+        return $query->where('team_id', $teamId);
+    }
 }
