@@ -77,10 +77,7 @@ class ResultPageController extends Controller
     public function play()
     {
         $week = $this->gameService->detectWeek();
-        if($week == 6) {
-            return response()->json(['success' => 0, 'detail' => 'all matches played already']);
-        }
-        $matches = $this->gameService->getMatch();
+        $matches = $this->gameService->getMatch($week);
         $result = [];
         foreach ($matches as $match) {
             $resultMatch = $this->gameService->resultGenerator($match->homeTeam, $match->guestTeam);
@@ -111,6 +108,33 @@ class ResultPageController extends Controller
             $res[] = $pArr;
         }
         return $res;
+    }
+
+    public function alternate_chunck($array, $parts) {
+        $t = 0;
+        $result = array();
+        $max = ceil(count($array) / $parts);
+        foreach(array_chunk($array, $max) as $v) {
+            if ($t < $parts) {
+                $result[] = $v;
+            } else {
+                foreach($v as $d) {
+                    $result[] = array($d);
+                }
+            }
+            $t += count($v);
+        }
+        return $result;
+    }
+    public function fill_chunck($array, $parts) {
+        $t = 0;
+        $result = array_fill(0, $parts - 1, array());
+        $max = ceil(count($array) / $parts);
+        foreach($array as $v) {
+            count($result[$t]) >= $max and $t ++;
+            $result[$t][] = $v;
+        }
+        return $result;
     }
 
 }

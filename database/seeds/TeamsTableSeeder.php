@@ -11,7 +11,23 @@ class TeamsTableSeeder extends Seeder
      */
     public function run()
     {
-        $teams = ['Chelsea' => 3, 'Arsenal' => 2, 'Manchester City' => 4, 'Liverpool' => 1];
+        $teams = [
+            'Chelsea' => 4,
+            'Arsenal' => 3,
+            'Manchester City' => 5,
+            'Liverpool' => 3,
+            'Manchester United' => 3,
+            'Tottenham' => 2,
+            'Wolves' => 1,
+            'Everton' => 1,
+            'Newcastle' => 1,
+            'Brighton' => 1,
+            'Fulham' => 1,
+            'Huddersfield' => 1,
+            'Crystal Palace' => 1,
+            'Cardiff City' => 1,
+            'Burnley FC' => 1,
+        ];
 
         foreach ($teams as $team=>$strength) {
             \App\Models\Team::updateOrCreate(['name' => $team],['strength' => $strength]);

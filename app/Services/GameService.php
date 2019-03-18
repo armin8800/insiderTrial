@@ -33,7 +33,7 @@ class GameService
 
     public function detectWeek()
     {
-        return Result::OfPlayed()->count() / (Team::all()->count()/2);
+        return Result::OfPlayed()->count() / floor(Team::all()->count()/2);
     }
 
     public function resultGenerator(Team $homeTeam, Team $guestTeam)
@@ -80,9 +80,11 @@ class GameService
         return $array[array_rand($array)];
     }
 
-    public function getMatch()
+    public function getMatch($weekNumber)
     {
-        $teams = Team::all()->pluck('id');
+        return Result::OfWeek($weekNumber)->get();
+        //$teams = Team::all()->pluck('id');
+
         $firstTeamID = $teams->shuffle()->first();
 
         $firstGame =Result::OfNotPlayed()

@@ -35,4 +35,24 @@ class Result extends Model
     {
         return $query->where('is_played', 0);
     }
+
+    /**
+     * @param $query
+     * @param $weekNumber
+     * @return mixed
+     */
+    public function scopeOfWeek($query, $weekNumber)
+    {
+        return $query->where('week_played', $weekNumber);
+    }
+
+    public function scopeOfGuestTeamId($query, $guestTeamId)
+    {
+        return $query->where('guest_team_id', $guestTeamId);
+    }
+
+    public function scopeOfHomeTeamId($query, $homeTeamId)
+    {
+        return $query->where('home_team_id', $homeTeamId);
+    }
 }
